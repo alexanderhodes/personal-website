@@ -1,5 +1,5 @@
 ---
-import { Icon } from "astro-icon";
+import { Icon } from "astro-icon/components";
 import BaseHead from "../components/BaseHead.astro";
 ---
 
@@ -7,59 +7,114 @@ import BaseHead from "../components/BaseHead.astro";
   <head>
     <BaseHead description="welcome" title="alexander - full stack developer" />
   </head>
-  <body class="flex flex-col justify-center min-h-screen text-center">
+  <body class="flex flex-col min-h-screen max-w-screen-lg mx-auto py-4">
     <h1 class="text-3xl mb-2">hey, ich bin alexander!</h1>
-    <h2 class="text-xl mb-3">full stack developer</h2>
-    <p>
-      Diese Seite befindet sich aktuell in Entwicklung ... Komm gerne später
-      wieder
-    </p>
-    <div class="mt-3 flex flex-row justify-center text-center">
-      <a
-        href="https://github.com/alexanderhodes"
-        class="mr-4 hover:text-red-500 dark:text-white dark:hover:text-red-500 w-5"
-        aria-label="Github"
-        rel="noopener"
+    <h2 class="text-base mb-3">
+      Full Stack Developer bei <a
+        href="https://www.b-42.com/"
+        target="_blank"
+        referrerpolicy="no-referrer"
+        class="hover:underline decoration-2 underline-offset-2 text-red-500"
+        >b42</a
       >
-        <Icon class="h-5" name="fa-brands:github" />
-      </a>
-      <a
-        href="https://www.linkedin.com/in/alexander-hodes/"
-        class="mr-4 hover:text-red-500 dark:text-white dark:hover:text-red-500 w-5"
-        aria-label="LinkedIn"
-        rel="noopener"
-      >
-        <Icon class="h-5" name="fa-brands:linkedin" />
-      </a>
-      <a
-        href="https://dev.to/alexanderhodes"
-        class="mr-4 hover:text-red-500 dark:text-white dark:hover:text-red-500 w-5"
-        aria-label="dev.to"
-        rel="noopener"
-      >
-        <Icon class="h-5" name="fa-brands:dev" />
-      </a>
-      <a
-        href="https://gitlab.com/alexander.hodes"
-        class="mr-4 hover:text-red-500 dark:text-white dark:hover:text-red-500 w-5"
-        aria-label="Gitlab"
-        rel="noopener"
-      >
-        <Icon class="h-5" name="fa-brands:gitlab" />
-      </a>
+    </h2>
+    <h3 class="font-bold">davor</h3>
+    <ul class="mb-3">
+      <li>Full Stack Developer bei bill.less</li>
+      <li>
+        Software Entwickler bei <a
+          href="https://groz-beckert.com/de/"
+          target="_blank"
+          referrerpolicy="no-referrer"
+          class="hover:underline decoration-2 underline-offset-2 text-red-500"
+          >groz-beckert</a
+        >
+      </li>
+      <li>
+        System Engineer bei <a
+          href="https://www.t-systems.com/de/de"
+          target="_blank"
+          referrerpolicy="no-referrer"
+          class="hover:underline decoration-2 underline-offset-2 text-red-500"
+          >t-systems</a
+        >
+      </li>
+    </ul>
+    <h3 class="font-bold">projekte/ ehrenämter</h3>
+    <ul class="mb-3">
+      <li>Walea (2023 bis heute)</li>
+      <li>Legmon (2021 bis heute)</li>
+      <li>Machbarschaft (2020 bis 2022)</li>
+    </ul>
+    <h3 class="font-bold">tech stack</h3>
+    <ul>
+      <li>React, React Native, Expo, Next.js, Astro, Node.js, Nest.js</li>
+    </ul>
+    <div>
+      <div class="flex flex-row justify-between my-2">
+        <div class="flex space-x-4">
+          <a
+            href="#"
+            class="font-bold underline decoration-2 underline-offset-2 text-red-500"
+            >DE</a
+          >
+          <!-- <a href="#" class="decoration-0 underline-offset-2 text-black">EN</a> -->
+        </div>
+        <div class="flex flex-row justify-center text-center">
+          <a
+            href="https://github.com/alexanderhodes"
+            class="mr-4 hover:text-red-500 dark:text-white dark:hover:text-red-500"
+            aria-label="Github"
+            rel="noopener"
+          >
+            <Icon name="fa-brands:github" />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/alexander-hodes/"
+            class="mr-4 hover:text-red-500 dark:text-white dark:hover:text-red-500"
+            aria-label="LinkedIn"
+            rel="noopener"
+          >
+            <Icon name="fa-brands:linkedin" />
+          </a>
+          <a
+            href="https://dev.to/alexanderhodes"
+            class="mr-4 hover:text-red-500 dark:text-white dark:hover:text-red-500"
+            aria-label="dev.to"
+            rel="noopener"
+          >
+            <Icon name="fa-brands:dev" />
+          </a>
+          <a
+            href="https://gitlab.com/alexander.hodes"
+            class="mr-4 hover:text-red-500 dark:text-white dark:hover:text-red-500"
+            aria-label="Gitlab"
+            rel="noopener"
+          >
+            <Icon name="fa-brands:gitlab" />
+          </a>
+        </div>
+      </div>
+      <div class="text-center">
+        <p>
+          © {new Date().getFullYear()} Alexander Hodes - created with Astro
+        </p>
+      </div>
     </div>
-    <style></style>
     <script
       defer
       type="text/javascript"
       src="https://api.pirsch.io/pirsch.js"
       id="pirschjs"
-      data-code="YnKtWuDewzKpiil0jnWMVp7YBcMScN7H"
-    ></script>
+      data-code="YnKtWuDewzKpiil0jnWMVp7YBcMScN7H"></script>
     <script
       defer
       data-domain="alexanderhodes.de"
-      src="https://plausible.alexanderhodes.de/js/script.js"
-    ></script>
+      src="https://plausible.alexanderhodes.de/js/script.js"></script>
+    <style>
+      [data-icon] {
+        font-size: 24px;
+      }
+    </style>
   </body>
 </html>

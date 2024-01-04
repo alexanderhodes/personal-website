@@ -1,13 +1,20 @@
 @font-face {
-    font-family: 'Inconsolata';
-    src: url("../fonts/Inconsolata.woff2") format("woff");
+  font-family: "Inconsolata";
+  src: url("/fonts/Inconsolata-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Inconsolata";
+  font-weight: bold;
+  src: url("/fonts/Inconsolata-Bold.ttf") format("truetype");
 }
 
 body {
-    font-family: 'Inconsolata', monospace, Arial;
+  font-family: "Inconsolata", monospace, Arial;
+  text-transform: lowercase;
 }
 
 ::selection {
-    background-color: #ef4444;
-    color: white;
+  background-color: #ef4444;
+  color: white;
 }
