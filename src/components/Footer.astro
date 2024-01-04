@@ -1,0 +1,70 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<div>
+  <div class="flex flex-row justify-between my-2">
+    <div class="flex space-x-4">
+      <a
+        href="#"
+        class="font-bold underline decoration-2 underline-offset-2 text-red-500"
+        >DE</a
+      >
+      <!-- <a href="#" class="decoration-0 underline-offset-2 text-black">EN</a> -->
+    </div>
+    <div class="flex flex-row justify-center text-center">
+      <a
+        href="https://github.com/alexanderhodes"
+        class="mr-4 hover:text-red-500 dark:text-white dark:hover:text-red-500"
+        aria-label="Github"
+        rel="noopener"
+      >
+        <Icon name="fa-brands:github" />
+      </a>
+      <a
+        href="https://www.linkedin.com/in/alexander-hodes/"
+        class="mr-4 hover:text-red-500 dark:text-white dark:hover:text-red-500"
+        aria-label="LinkedIn"
+        rel="noopener"
+      >
+        <Icon name="fa-brands:linkedin" />
+      </a>
+      <a
+        href="https://dev.to/alexanderhodes"
+        class="mr-4 hover:text-red-500 dark:text-white dark:hover:text-red-500"
+        aria-label="dev.to"
+        rel="noopener"
+      >
+        <Icon name="fa-brands:dev" />
+      </a>
+      <a
+        href="https://gitlab.com/alexander.hodes"
+        class="mr-4 hover:text-red-500 dark:text-white dark:hover:text-red-500"
+        aria-label="Gitlab"
+        rel="noopener"
+      >
+        <Icon name="fa-brands:gitlab" />
+      </a>
+    </div>
+  </div>
+  <div class="text-center">
+    <p>
+      © {new Date().getFullYear()} Alexander Hodes - created with Astro
+    </p>
+  </div>
+</div>
+<script
+  defer
+  type="text/javascript"
+  src="https://api.pirsch.io/pirsch.js"
+  id="pirschjs"
+  data-code="YnKtWuDewzKpiil0jnWMVp7YBcMScN7H"></script>
+<script
+  defer
+  data-domain="alexanderhodes.de"
+  src="https://plausible.alexanderhodes.de/js/script.js"></script>
+<style>
+  [data-icon] {
+    font-size: 24px;
+  }
+</style>

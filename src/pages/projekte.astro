@@ -1,0 +1,71 @@
+---
+import { Icon } from "astro-icon/components";
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import { formatDateMonth } from "../utils/date";
+
+const projects = await getCollection("projects");
+const sortedProjects = [...projects].sort((a, b) => {
+  return new Date(b.data.start).getTime() - new Date(a.data.start).getTime();
+});
+---
+
+<Layout
+  title="alexander - projekte"
+  language="de"
+  description="alexander - full stack developer"
+>
+  <h1 class="text-xl font-bold">projekte/ ehrenämter</h1>
+  {
+    sortedProjects.map((project, index) => (
+      <div class="mb-3">
+        <div class="flex justify-between items-center mb-1">
+          <h2 class="font-bold text-lg">{project.data.title}</h2>
+          <div class="flex">
+            <p>
+              {formatDateMonth(project.data.start)} -{" "}
+              {formatDateMonth(project.data.end)}
+            </p>
+          </div>
+        </div>
+        <p class="whitespace-pre-wrap">{project.data.description}</p>
+        <div class="flex justify-between items-center">
+          <p>
+            <span class="font-bold">Tech Stack:&nbsp;</span>
+            {project.data.technologies.join(" -  ")}
+          </p>
+          <div class="flex space-x-3">
+            {project.data.website && (
+              <a
+                href={project.data.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-gray-500 hover:text-gray-900"
+              >
+                <Icon name="feather:external-link" />
+              </a>
+            )}
+            {project.data.github && (
+              <a
+                href={project.data.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-gray-500 hover:text-gray-900"
+              >
+                <Icon name="fa-brands:github" />
+              </a>
+            )}
+          </div>
+        </div>
+        {index + 1 !== sortedProjects.length && (
+          <hr class="my-4 mx-auto w-24 border-black" />
+        )}
+      </div>
+    ))
+  }
+  <style>
+    [data-icon] {
+      font-size: 20px;
+    }
+  </style>
+</Layout>

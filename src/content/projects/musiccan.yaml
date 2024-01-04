@@ -1,0 +1,17 @@
+title: Musiccan
+description: >-
+  Musiccan ist die Idee eines Teams gewesen, das bei Jugend gründet im
+  Wettbewerbsjahr 2022/ 2023 teilgenommen hat und ins Finale gekommen ist. Die
+  Idee war die Entwicklung einer App, mit der Musikschüler mit Hilfe von
+  Künstlicher Intelligenz beim Lernen unterstützt werden.
+
+  Für die Präsentation im Finale habe ich einen Prototyp entwickelt, der die
+  Funktionsweise mit der Aufnahme von Stücken darstellt und die Aufnahme des
+  Musikstücks visualisiert.
+start: '2023-05-01'
+end: '2023-06-30'
+technologies:
+  - react-native
+  - react
+  - next-js
+website: https://www.jugend-gruendet.de/finale-2023/musiccan/

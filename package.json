@@ -1,22 +1,35 @@
 {
-  "name": "@alexanderhodes/personal-website",
+  "name": "alexanderhodes-personal-website",
   "version": "0.0.1",
+  "type": "module",
   "private": true,
   "scripts": {
-    "dev": "astro dev",
+    "dev": "astro dev --host 127.0.0.1",
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
   "devDependencies": {
-    "@astrojs/mdx": "^2.0.3",
-    "@astrojs/tailwind": "^5.1.0",
-    "astro": "^4.0.9"
+    "@types/react": "^18.2.46",
+    "@types/react-dom": "^18.2.18"
   },
   "dependencies": {
+    "@astrojs/check": "^0.3.4",
+    "@astrojs/markdoc": "^0.8.2",
+    "@astrojs/mdx": "^2.0.3",
+    "@astrojs/netlify": "^4.1.0",
+    "@astrojs/react": "^3.0.9",
+    "@astrojs/tailwind": "^5.0.4",
     "@iconify-json/fa-brands": "^1.1.8",
+    "@iconify-json/feather": "^1.1.8",
+    "@keystatic/astro": "^2.0.3",
+    "@keystatic/core": "^0.2.9",
+    "astro": "^4.0.7",
     "astro-icon": "^1.0.2",
-    "tailwindcss": "^3.4.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.3.3"
   }
 }

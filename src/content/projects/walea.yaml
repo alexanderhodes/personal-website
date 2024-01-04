@@ -1,0 +1,20 @@
+title: Walea
+description: >-
+  Walea hat sich zum Ziel gesetzt eine Plattform für Hilfsangebote zu
+  psychischen Erkrankungen aufzubauen. Die Hilfsangebote wurden bisher direkt
+  über die Website mit Wordpress gepflegt und verwaltet, was nicht sehr
+  nutzerfreundlich gewesen ist.
+
+  Durch die Entwicklung einer neuen Anwendung sollte die Pflege für das Team
+  vereinfacht und der Zugriff auf die Hilfsangebote verbessert werden. Die
+  Anwendung wurde dabei mit dem t3-Stack aufgebaut, wodurch eine Full-Stack
+  Applikation mit Next.js und direkter Datenbank-Anbindung über Prisma und tRPC
+  entwickelt worden ist.
+url: https://walea.info
+start: "2023-07-01"
+technologies:
+  - next-js
+  - react
+  - prisma
+  - trpc
+website: https://walea.info/
