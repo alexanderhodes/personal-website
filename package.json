@@ -21,6 +21,7 @@
     "@astrojs/netlify": "^4.1.0",
     "@astrojs/react": "^3.0.9",
     "@astrojs/tailwind": "^5.0.4",
+    "@astrojs/vercel": "^6.1.2",
     "@iconify-json/fa-brands": "^1.1.8",
     "@iconify-json/feather": "^1.1.8",
     "@keystatic/astro": "^2.0.3",
