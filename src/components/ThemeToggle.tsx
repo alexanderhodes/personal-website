@@ -20,7 +20,11 @@ const ThemeToggle: FunctionComponent<ThemeToggleProps> = ({ children }) => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  return <button onClick={handleClick}>{children}</button>;
+  return (
+    <button onClick={handleClick} aria-label="theme-toggle">
+      {children}
+    </button>
+  );
 };
 
 export default ThemeToggle;
