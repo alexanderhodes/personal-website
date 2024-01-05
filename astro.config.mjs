@@ -31,6 +31,11 @@ export default defineConfig({
       filter: (page) =>
         page !== "https://stargazers.club/keystatic/" &&
         page !== "https://stargazers.club/api/keystatic/",
+      defaultLocale: "de",
+      locales: {
+        de: "de-DE",
+        en: "en-US",
+      },
     }),
   ],
   output: "hybrid",
