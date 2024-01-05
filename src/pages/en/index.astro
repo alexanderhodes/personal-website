@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import Layout from "../layouts/Layout.astro";
+import Layout from "../../layouts/Layout.astro";
 
 const projects = await getCollection("projects");
 const sortedProjects = [...projects].sort((a, b) => {
@@ -14,9 +14,9 @@ const visibleTechnologies = [...technologies].filter((technology) => {
 ---
 
 <Layout title="alexander - home" description="alexander - full stack developer">
-  <h1 class="text-3xl mb-2">hey, ich bin alexander!</h1>
+  <h1 class="text-3xl mb-2">hey, i'm alexander!</h1>
   <h2 class="text-base mb-3">
-    Full Stack Developer bei <a
+    Full Stack Developer at <a
       href="https://www.b-42.com/"
       target="_blank"
       referrerpolicy="no-referrer"
@@ -24,11 +24,11 @@ const visibleTechnologies = [...technologies].filter((technology) => {
       >b42</a
     >
   </h2>
-  <h3 class="font-bold">früher</h3>
+  <h3 class="font-bold">previous</h3>
   <ul class="mb-3">
-    <li>Full Stack Developer bei bill.less</li>
+    <li>Full Stack Developer at bill.less</li>
     <li>
-      Software Entwickler bei <a
+      Software Developer at <a
         href="https://groz-beckert.com/de/"
         target="_blank"
         referrerpolicy="no-referrer"
@@ -37,7 +37,7 @@ const visibleTechnologies = [...technologies].filter((technology) => {
       >
     </li>
     <li>
-      System Engineer bei <a
+      System Engineer at <a
         href="https://www.t-systems.com/de/de"
         target="_blank"
         referrerpolicy="no-referrer"
@@ -46,14 +46,14 @@ const visibleTechnologies = [...technologies].filter((technology) => {
       >
     </li>
   </ul>
-  <h3 class="font-bold">projekte/ ehrenämter</h3>
+  <h3 class="font-bold">projects/ volunteering</h3>
   <ul class="mb-3">
     {
       sortedProjects.map((project) => (
         <li>
           <a
             class="hover:underline decoration-2 underline-offset-2 hover:text-red-800"
-            href="/projekte"
+            href="/en/projects"
           >
             {project.data.title}
           </a>

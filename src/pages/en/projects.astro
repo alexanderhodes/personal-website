@@ -1,8 +1,8 @@
 ---
 import { Icon } from "astro-icon/components";
 import { getCollection } from "astro:content";
-import Layout from "../layouts/Layout.astro";
-import { formatDateMonth } from "../utils/date";
+import Layout from "../../layouts/Layout.astro";
+import { formatDateMonth } from "../../utils/date";
 
 const projects = await getCollection("projects");
 const sortedProjects = [...projects].sort((a, b) => {
@@ -11,10 +11,10 @@ const sortedProjects = [...projects].sort((a, b) => {
 ---
 
 <Layout
-  title="alexander - projekte"
+  title="alexander - projects"
   description="alexander - full stack developer"
 >
-  <h1 class="text-xl font-bold">projekte/ ehrenämter</h1>
+  <h1 class="text-xl font-bold">projects/ volunteering</h1>
   {
     sortedProjects.map((project, index) => (
       <div class="mb-3">
