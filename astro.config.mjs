@@ -23,18 +23,21 @@ export default defineConfig({
       policy: [
         {
           userAgent: "*",
-          disallow: ["/keystatic/*", "/api/keystatic/*"],
+          disallow: ["/keystatic/*", "/api/keystatic/*", "/musiccan"],
         },
       ],
     }),
     sitemap({
       filter: (page) =>
-        page !== "https://stargazers.club/keystatic/" &&
-        page !== "https://stargazers.club/api/keystatic/",
-      defaultLocale: "de",
-      locales: {
-        de: "de-DE",
-        en: "en-US",
+        page !== "https://alexanderhodes.de/keystatic/" &&
+        page !== "https://alexanderhodes.de/api/keystatic/" &&
+        page !== "https://alexanderhodes.de/musiccan/",
+      i18n: {
+        defaultLocale: "de",
+        locales: {
+          de: "de-DE",
+          en: "en-US",
+        },
       },
     }),
   ],
