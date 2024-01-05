@@ -1,22 +1,33 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
+import {
+  getLangFromUrl,
+  useTranslatedPath,
+  useTranslations,
+} from "../i18n/utils";
 
-const projects = await getCollection("projects");
+const translatePath = useTranslatedPath("de");
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const projects = await getCollection("projects", (project) => {
+  return project.id.startsWith("de");
+});
 const sortedProjects = [...projects].sort((a, b) => {
   return new Date(b.data.start).getTime() - new Date(a.data.start).getTime();
 });
 
-const technologies = await getCollection("technologies");
-const visibleTechnologies = [...technologies].filter((technology) => {
-  return technology.data.visible;
+const technologies = await getCollection("technologies", (item) => {
+  return item.data.visible;
 });
 ---
 
 <Layout title="alexander - home" description="alexander - full stack developer">
   <h1 class="text-3xl mb-2">hey, ich bin alexander!</h1>
   <h2 class="text-base mb-3">
-    Full Stack Developer bei <a
+    Full Stack Developer {t("common.at")}
+    <a
       href="https://www.b-42.com/"
       target="_blank"
       referrerpolicy="no-referrer"
@@ -24,11 +35,13 @@ const visibleTechnologies = [...technologies].filter((technology) => {
       >b42</a
     >
   </h2>
-  <h3 class="font-bold">früher</h3>
+  <h3 class="font-bold">{t("common.previous")}</h3>
   <ul class="mb-3">
-    <li>Full Stack Developer bei bill.less</li>
+    <li>Full Stack Developer {t("common.at")} bill.less</li>
     <li>
-      Software Entwickler bei <a
+      {t("common.softwareDeveloper")}
+      {t("common.at")}
+      <a
         href="https://groz-beckert.com/de/"
         target="_blank"
         referrerpolicy="no-referrer"
@@ -37,7 +50,8 @@ const visibleTechnologies = [...technologies].filter((technology) => {
       >
     </li>
     <li>
-      System Engineer bei <a
+      System Engineer {t("common.at")}
+      <a
         href="https://www.t-systems.com/de/de"
         target="_blank"
         referrerpolicy="no-referrer"
@@ -46,14 +60,14 @@ const visibleTechnologies = [...technologies].filter((technology) => {
       >
     </li>
   </ul>
-  <h3 class="font-bold">projekte/ ehrenämter</h3>
+  <h3 class="font-bold">{t("nav.projects")}</h3>
   <ul class="mb-3">
     {
       sortedProjects.map((project) => (
         <li>
           <a
             class="hover:underline decoration-2 underline-offset-2 hover:text-red-800"
-            href="/projekte"
+            href={translatePath("/projects/")}
           >
             {project.data.title}
           </a>
@@ -62,5 +76,5 @@ const visibleTechnologies = [...technologies].filter((technology) => {
     }
   </ul>
   <h3 class="font-bold">tech stack</h3>
-  <p>{visibleTechnologies.map((t) => t.data.title).join(", ")}</p>
+  <p>{technologies.map((t) => t.data.title).join(", ")}</p>
 </Layout>

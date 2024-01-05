@@ -8,7 +8,7 @@ export default config({
     posts: collection({
       label: "Projects",
       slugField: "title",
-      path: "src/content/projects/*",
+      path: "src/content/projects/**",
       schema: {
         title: fields.slug({ name: { label: "Title" } }),
         description: fields.text({ label: "Description", multiline: true }),

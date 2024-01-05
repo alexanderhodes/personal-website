@@ -28,7 +28,7 @@ export function useTranslatedPath(lang: keyof typeof ui) {
 export function getRouteFromUrl(url: URL): string | undefined {
   const pathname = new URL(url).pathname;
   const parts = pathname?.split("/");
-  const path = parts.pop() || parts.pop();
+  const path = parts.pop();
 
   if (path === undefined) {
     return undefined;
@@ -38,7 +38,9 @@ export function getRouteFromUrl(url: URL): string | undefined {
 
   if (defaultLang === currentLang) {
     const route = Object.values(routes)[0];
-    return route[path] !== undefined ? route[path] : undefined;
+    const value = Object.keys(route).find((key) => route[key] === path);
+
+    return value !== undefined ? value : undefined;
   }
 
   const getKeyByValue = (

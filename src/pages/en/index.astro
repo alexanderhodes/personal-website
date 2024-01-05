@@ -1,22 +1,28 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 
-const projects = await getCollection("projects");
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const projects = await getCollection("projects", (project) => {
+  return project.id.startsWith("en");
+});
 const sortedProjects = [...projects].sort((a, b) => {
   return new Date(b.data.start).getTime() - new Date(a.data.start).getTime();
 });
 
-const technologies = await getCollection("technologies");
-const visibleTechnologies = [...technologies].filter((technology) => {
-  return technology.data.visible;
+const technologies = await getCollection("technologies", (item) => {
+  return item.data.visible;
 });
 ---
 
 <Layout title="alexander - home" description="alexander - full stack developer">
   <h1 class="text-3xl mb-2">hey, i'm alexander!</h1>
   <h2 class="text-base mb-3">
-    Full Stack Developer at <a
+    Full Stack Developer {t("common.at")}
+    <a
       href="https://www.b-42.com/"
       target="_blank"
       referrerpolicy="no-referrer"
@@ -24,11 +30,13 @@ const visibleTechnologies = [...technologies].filter((technology) => {
       >b42</a
     >
   </h2>
-  <h3 class="font-bold">previous</h3>
+  <h3 class="font-bold">{t("common.previous")}</h3>
   <ul class="mb-3">
-    <li>Full Stack Developer at bill.less</li>
+    <li>Full Stack Developer {t("common.at")} bill.less</li>
     <li>
-      Software Developer at <a
+      {t("common.softwareDeveloper")}
+      {t("common.at")}
+      <a
         href="https://groz-beckert.com/de/"
         target="_blank"
         referrerpolicy="no-referrer"
@@ -37,7 +45,8 @@ const visibleTechnologies = [...technologies].filter((technology) => {
       >
     </li>
     <li>
-      System Engineer at <a
+      System Engineer {t("common.at")}
+      <a
         href="https://www.t-systems.com/de/de"
         target="_blank"
         referrerpolicy="no-referrer"
@@ -46,7 +55,7 @@ const visibleTechnologies = [...technologies].filter((technology) => {
       >
     </li>
   </ul>
-  <h3 class="font-bold">projects/ volunteering</h3>
+  <h3 class="font-bold">{t("index.projects")}</h3>
   <ul class="mb-3">
     {
       sortedProjects.map((project) => (
@@ -62,5 +71,5 @@ const visibleTechnologies = [...technologies].filter((technology) => {
     }
   </ul>
   <h3 class="font-bold">tech stack</h3>
-  <p>{visibleTechnologies.map((t) => t.data.title).join(", ")}</p>
+  <p>{technologies.map((t) => t.data.title).join(", ")}</p>
 </Layout>
