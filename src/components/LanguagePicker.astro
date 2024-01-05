@@ -17,7 +17,7 @@ const translatePath = useTranslatedPath(currentLang);
       <li>
         <a
           href={translatePath(`/${route ? route : ""}`, lang)}
-          class={`hover:underline hover:decoration-2 hover:underline-offset-2 text-white hover:text-red-800 ${
+          class={`hover:underline hover:decoration-2 hover:underline-offset-2 text-black dark:text-white hover:text-red-800 ${
             lang === currentLang ? "underline" : ""
           }`}
         >
