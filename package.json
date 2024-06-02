@@ -19,6 +19,7 @@
     "@astrojs/markdoc": "^0.8.2",
     "@astrojs/mdx": "^2.0.3",
     "@astrojs/netlify": "^4.1.0",
+    "@astrojs/node": "^8.2.5",
     "@astrojs/react": "^3.0.9",
     "@astrojs/sitemap": "^3.0.4",
     "@astrojs/tailwind": "^5.1.0",

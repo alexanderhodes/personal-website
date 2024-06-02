@@ -8,6 +8,7 @@ import keystatic from "@keystatic/astro";
 import vercel from "@astrojs/vercel/serverless";
 import robotsTxt from "astro-robots-txt";
 import sitemap from "@astrojs/sitemap";
+import node from "@astrojs/node";
 
 // https://astro.build/config
 export default defineConfig({
@@ -41,13 +42,15 @@ export default defineConfig({
       },
     }),
   ],
-  output: "hybrid",
   vite: {
     ssr: {
       external: ["svgo"],
     },
   },
-  adapter: vercel(),
+  output: "server",
+  adapter: node({
+    mode: "standalone",
+  }),
   i18n: {
     defaultLocale: "de",
     locales: ["en", "de"],
