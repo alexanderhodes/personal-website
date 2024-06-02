@@ -47,7 +47,7 @@ export default defineConfig({
       external: ["svgo"],
     },
   },
-  output: "server",
+  output: "hybrid",
   adapter: node({
     mode: "standalone",
   }),
