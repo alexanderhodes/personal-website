@@ -16,7 +16,7 @@ description: >-
   bearbeitet werden. Hierdurch sind die Inhalte in der App deutlich flexibler
   geworden.
 url: https://legmon.com
-start: '2021-04-01'
+start: 2021-04-01
 technologies:
   - react-native
   - react

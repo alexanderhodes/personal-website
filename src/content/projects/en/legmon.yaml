@@ -14,7 +14,7 @@ description: >-
   maintained and edited independently via a CMS. This has made the content in
   the app much more flexible.
 url: https://legmon.com
-start: "2021-04-01"
+start: 2021-04-01
 technologies:
   - react-native
   - react

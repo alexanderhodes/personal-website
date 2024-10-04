@@ -8,8 +8,8 @@ description: >-
   Für die Präsentation im Finale habe ich einen Prototyp entwickelt, der die
   Funktionsweise mit der Aufnahme von Stücken darstellt und die Aufnahme des
   Musikstücks visualisiert.
-start: '2023-05-01'
-end: '2023-06-30'
+start: 2023-05-01
+end: 2023-06-30
 technologies:
   - react-native
   - react

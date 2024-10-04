@@ -7,8 +7,8 @@ description: >-
   bereitstellt. Das Projekt wurde als eines der besten 20 aus 1500 Projekten
   ausgezeichnet.
 url: https://machbarschaft.jetzt
-start: '2020-03-01'
-end: '2022-07-01'
+start: 2020-03-01
+end: 2022-07-01
 technologies:
   - angular
   - kotlin

@@ -9,7 +9,7 @@ description: >-
   using the t3 stack, resulting in a full-stack application with Next.js and a
   direct database connection via Prisma and tRPC.
 url: https://walea.info
-start: '2023-07-01'
+start: 2023-07-01
 technologies:
   - next-js
   - react

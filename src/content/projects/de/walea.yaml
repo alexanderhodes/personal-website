@@ -11,7 +11,7 @@ description: >-
   Applikation mit Next.js und direkter Datenbank-Anbindung über Prisma und tRPC
   entwickelt worden ist.
 url: https://walea.info
-start: "2023-07-01"
+start: 2023-07-01
 technologies:
   - next-js
   - react
