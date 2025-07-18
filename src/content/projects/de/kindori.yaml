@@ -1,0 +1,11 @@
+title: Kindori
+about: Text über Kindori
+tasks: []
+description: >-
+  Text über Kindori
+start: 2024-04-01
+technologies:
+  - react-native
+  - nest-js
+  - prisma
+website: https://kindori.de/

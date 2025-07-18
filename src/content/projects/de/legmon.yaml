@@ -1,11 +1,14 @@
 title: Legmon
-description: >-
+about: >-
   Legmon hat das Ziel junge Menschen zu unterstützen und die Themen
   Chancengleichheit und soziale Mobilität anzugehen. Dabei ist ein Angebot
   bestehend aus Mentoring, Content-Bereich (YouTube und Instagram) und
   Habit-Tracking durch eine App. Die App dient dabei als Vereinigung der Inhalte
   aus den verschiedenen Bereichen.
-
+tasks:
+  - Entwicklung einer App für Android und iOS
+  - Pflege von Inhalten über ein CMS
+description: >-
   Zu Beginn gab es jeweils eine native App für Android und iOS. Dies hatte zu
   verschiedenen Problemen geführt, da die Nutzerdaten lokal gespeichert wurden
   und für Content-Updates ein App Release notwendig war.
