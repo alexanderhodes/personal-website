@@ -11,6 +11,11 @@ export default config({
       path: "src/content/projects/**",
       schema: {
         title: fields.slug({ name: { label: "Title" } }),
+        about: fields.text({ label: "About", multiline: true }),
+        tasks: fields.array(fields.text({ label: "Task" }), {
+          label: "Tasks",
+          itemLabel: (props) => props?.value ?? "-",
+        }),
         description: fields.text({ label: "Description", multiline: true }),
         url: fields.text({ label: "URL" }),
         start: fields.date({ label: "Start" }),

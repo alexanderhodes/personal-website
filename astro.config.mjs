@@ -5,7 +5,7 @@ import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import markdoc from "@astrojs/markdoc";
 import keystatic from "@keystatic/astro";
-import vercel from "@astrojs/vercel/serverless";
+import vercel from "@astrojs/vercel";
 import robotsTxt from "astro-robots-txt";
 import sitemap from "@astrojs/sitemap";
 
@@ -41,7 +41,7 @@ export default defineConfig({
       },
     }),
   ],
-  output: "hybrid",
+  output: "server",
   vite: {
     ssr: {
       external: ["svgo"],
