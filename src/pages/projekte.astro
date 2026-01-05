@@ -3,14 +3,8 @@ import { Icon } from "astro-icon/components";
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import { formatDateMonth } from "../utils/date";
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-
-const projects = await getCollection("projects", (project) => {
-  return project.id.startsWith("de");
-});
+const projects = await getCollection("projects");
 const sortedProjects = [...projects].sort((a, b) => {
   return new Date(b.data.start).getTime() - new Date(a.data.start).getTime();
 });
@@ -20,7 +14,7 @@ const sortedProjects = [...projects].sort((a, b) => {
   title="alexander - projekte"
   description="alexander - full stack developer"
 >
-  <h1 class="text-xl font-bold">{t("index.projects")}</h1>
+  <h1 class="text-xl font-bold">Projekte/ Ehrenämter</h1>
   {
     sortedProjects.map((project, index) => (
       <div class="mb-3">
@@ -30,12 +24,12 @@ const sortedProjects = [...projects].sort((a, b) => {
             <p>
               {formatDateMonth({
                 date: project.data.start,
-                today: t("common.today"),
+                today: "heute",
               })}{" "}
               -{" "}
               {formatDateMonth({
                 date: project.data.end,
-                today: t("common.today"),
+                today: "heute",
               })}
             </p>
           </div>

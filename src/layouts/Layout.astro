@@ -3,11 +3,6 @@ import Footer from "../components/Footer.astro";
 import BaseHead from "../components/BaseHead.astro";
 import ThemeToggle from "../components/ThemeToggle";
 import { Icon } from "astro-icon/components";
-import {
-  getLangFromUrl,
-  useTranslatedPath,
-  useTranslations,
-} from "../i18n/utils";
 
 export interface Props {
   title: string;
@@ -15,13 +10,9 @@ export interface Props {
 }
 
 const { title, description } = Astro.props;
-
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-const translatePath = useTranslatedPath(lang);
 ---
 
-<html lang={lang}>
+<html lang="de">
   <head>
     <BaseHead description={description} title={title} />
   </head>
@@ -30,15 +21,15 @@ const translatePath = useTranslatedPath(lang);
   >
     <div class="flex justify-between items-end mb-3">
       <a
-        href={translatePath("/")}
+        href="/"
         class="font-bold text-2xl hover:underline decoration-2 underline-offset-2 hover:text-red-800"
-        >{t("nav.home")}</a
+        >Home</a
       >
       <div class="flex items-center">
         <a
-          href={translatePath("/projects/")}
+          href="/projekte/"
           class="hover:underline decoration-2 underline-offset-2 hover:text-red-800 mr-4"
-          >{t("nav.projects")}</a
+          >Projekte</a
         >
         <ThemeToggle client:only>
           <Icon name="feather:sun" class="w-6 h-6 dark:text-white" />

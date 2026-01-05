@@ -36,7 +36,6 @@ export default defineConfig({
         defaultLocale: "de",
         locales: {
           de: "de-DE",
-          en: "en-US",
         },
       },
     }),
@@ -50,7 +49,7 @@ export default defineConfig({
   adapter: vercel(),
   i18n: {
     defaultLocale: "de",
-    locales: ["en", "de"],
+    locales: ["de"],
     routing: {
       prefixDefaultLocale: false,
     },
