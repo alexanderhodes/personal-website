@@ -46,7 +46,9 @@ export default defineConfig({
       external: ["svgo"],
     },
   },
-  adapter: vercel(),
+  adapter: vercel({
+    runtime: "nodejs20.x",
+  }),
   i18n: {
     defaultLocale: "de",
     locales: ["de"],
