@@ -20,3 +20,19 @@ body {
   background-color: #ef4444;
   color: white;
 }
+
+.link {
+  @apply hover:underline decoration-2 underline-offset-2 text-red-800;
+}
+
+a:hover {
+  @apply hover:underline hover:text-red-700 dark:hover:text-red-800;
+}
+
+h1 {
+  @apply text-xl font-bold mb-2;
+}
+
+article a {
+  @apply text-red-800 hover:underline decoration-2 underline-offset-2;
+}

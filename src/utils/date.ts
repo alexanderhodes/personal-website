@@ -1,3 +1,20 @@
+export function formatTimeframe(props: {
+  start?: string | Date;
+  end?: string | Date;
+}) {
+  const { start, end } = props;
+
+  const startFormatted = formatDateMonth({ date: start });
+  const endFormatted = formatDateMonth({ date: end, today: "heute" });
+
+  if (!startFormatted && !endFormatted) return "";
+
+  if (startFormatted && !endFormatted) return `${startFormatted} – heute`;
+  if (!startFormatted && endFormatted) return `${endFormatted}`;
+
+  return `${startFormatted} – ${endFormatted}`;
+}
+
 export function formatDateMonth(props: {
   date?: string | Date;
   today?: string;

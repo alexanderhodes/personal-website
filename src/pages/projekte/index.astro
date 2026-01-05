@@ -1,8 +1,8 @@
 ---
 import { Icon } from "astro-icon/components";
 import { getCollection } from "astro:content";
-import Layout from "../layouts/Layout.astro";
-import { formatDateMonth } from "../utils/date";
+import Layout from "../../layouts/Layout.astro";
+import { formatTimeframe } from "../../utils/date";
 
 const projects = await getCollection("projects");
 const sortedProjects = [...projects].sort((a, b) => {
@@ -22,14 +22,9 @@ const sortedProjects = [...projects].sort((a, b) => {
           <h2 class="font-bold text-lg">{project.data.title}</h2>
           <div class="flex">
             <p>
-              {formatDateMonth({
-                date: project.data.start,
-                today: "heute",
-              })}{" "}
-              -{" "}
-              {formatDateMonth({
-                date: project.data.end,
-                today: "heute",
+              {formatTimeframe({
+                start: project.data.start,
+                end: project.data.end,
               })}
             </p>
           </div>

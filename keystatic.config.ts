@@ -9,6 +9,7 @@ export default config({
       label: "Projects",
       slugField: "title",
       path: "src/content/projects/**",
+      format: { contentField: "content" },
       schema: {
         title: fields.slug({ name: { label: "Title" } }),
         about: fields.text({ label: "About", multiline: true }),
@@ -33,7 +34,10 @@ export default config({
         ),
         github: fields.url({ label: "GitHub" }),
         website: fields.url({ label: "Website" }),
+        other: fields.url({ label: "Other Link" }),
+        content: fields.markdoc({ label: "Content" }),
       },
+      columns: ["title", "start", "end"],
     }),
     technologies: collection({
       label: "Technologies",

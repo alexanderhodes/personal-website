@@ -1,0 +1,68 @@
+---
+import { Icon } from "astro-icon/components";
+import { getEntry, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { formatTimeframe } from "../../utils/date";
+
+const { id } = Astro.params;
+if (id === undefined) {
+  return Astro.redirect("/404");
+}
+
+const project = await getEntry("projects", id);
+
+if (!project) {
+  return Astro.redirect("/404");
+}
+
+const { Content } = await render(project);
+---
+
+<Layout
+  title={`alexander - ${project.data.title}`}
+  description="alexander - full stack developer"
+>
+  <h1 class="text-xl font-bold mb-2">{project.data.title}</h1>
+  <div class="mb-4">
+    <p>
+      <span class="font-bold">Zeitraum:&nbsp;</span>
+      {formatTimeframe({ start: project.data.start, end: project.data.end })}
+    </p>
+    <p>
+      <span class="font-bold">Tech Stack:&nbsp;</span>
+      {project.data.technologies.join(" -  ")}
+    </p>
+  </div>
+  <div
+    class="prose dark:prose-invert prose-h1:text-xl prose-h1:font-bold prose-h1:mb-2 mb-4"
+  >
+    <Content />
+  </div>
+  <h1>Links</h1>
+  <div class="flex space-x-3">
+    {
+      project.data.website && (
+        <a
+          href={project.data.website}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon
+            name="feather:external-link"
+            class="hover:text-red-800 dark:text-white dark:hover:text-red-800"
+          />
+        </a>
+      )
+    }
+    {
+      project.data.github && (
+        <a href={project.data.github} target="_blank" rel="noopener noreferrer">
+          <Icon
+            name="feather:github"
+            class="hover:text-red-800 dark:text-white dark:hover:text-red-800"
+          />
+        </a>
+      )
+    }
+  </div>
+</Layout>

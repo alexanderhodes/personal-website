@@ -20,21 +20,27 @@ const technologies = await getCollection("technologies", (item) => {
       href="https://www.b-42.com/"
       target="_blank"
       referrerpolicy="no-referrer"
-      class="hover:underline decoration-2 underline-offset-2 text-red-800"
-      >b42</a
+      class="link">b42</a
     >
   </h2>
   <h3 class="font-bold">früher</h3>
   <ul class="mb-3">
-    <li>Full Stack Developer bei bill.less</li>
+    <li>
+      Full Stack Developer bei
+      <a
+        href="https://www.startnext.com/billless"
+        target="_blank"
+        referrerpolicy="no-referrer"
+        class="link">bill.less</a
+      >
+    </li>
     <li>
       Softwareentwickler bei
       <a
         href="https://groz-beckert.com/de/"
         target="_blank"
         referrerpolicy="no-referrer"
-        class="hover:underline decoration-2 underline-offset-2 text-red-800"
-        >groz-beckert</a
+        class="link">groz-beckert</a
       >
     </li>
     <li>
@@ -43,8 +49,7 @@ const technologies = await getCollection("technologies", (item) => {
         href="https://www.t-systems.com/de/de"
         target="_blank"
         referrerpolicy="no-referrer"
-        class="hover:underline decoration-2 underline-offset-2 text-red-800"
-        >t-systems</a
+        class="link">t-systems</a
       >
     </li>
   </ul>
@@ -55,7 +60,7 @@ const technologies = await getCollection("technologies", (item) => {
         <li>
           <a
             class="hover:underline decoration-2 underline-offset-2 hover:text-red-800"
-            href="/projekte/"
+            href={`/projekte/${project.id}`}
           >
             {project.data.title}
           </a>
