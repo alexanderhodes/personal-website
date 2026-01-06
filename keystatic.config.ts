@@ -1,11 +1,11 @@
-import { config, fields, collection, singleton } from "@keystatic/core";
+import { config, fields, collection } from "@keystatic/core";
 
 export default config({
   storage: {
     kind: "local",
   },
   collections: {
-    posts: collection({
+    projects: collection({
       label: "Projects",
       slugField: "title",
       path: "src/content/projects/**",

@@ -9,7 +9,9 @@ if (id === undefined) {
   return Astro.redirect("/404");
 }
 
-const project = await getEntry("projects", id);
+const cleanedId = id.replace(".mdoc", ""); // Clean the id if necessary
+
+const project = await getEntry("projects", cleanedId);
 
 if (!project) {
   return Astro.redirect("/404");
