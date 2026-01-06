@@ -1,0 +1,65 @@
+---
+import { codeToHtml } from "shiki";
+
+interface Props {
+  language?: string;
+  content?: string;
+}
+
+const { language = "plaintext", content = "" } = Astro.props;
+
+const highlightedCode = await codeToHtml(content, {
+  lang: language,
+  themes: {
+    light: "github-light",
+    dark: "github-dark",
+  },
+});
+---
+
+<div class="code-block-wrapper my-6">
+  <div
+    class="code-block-header bg-gray-800 dark:bg-gray-900 px-4 py-2 rounded-t-lg flex items-center justify-between"
+  >
+    <span class="text-xs font-semibold text-gray-300 uppercase">{language}</span
+    >
+    <button
+      class="copy-button text-xs text-gray-400 hover:text-gray-200 transition-colors"
+      aria-label="Code kopieren"
+    >
+      Kopieren
+    </button>
+  </div>
+  <div class="code-block-content" set:html={highlightedCode} />
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const copyButtons = document.querySelectorAll(".copy-button");
+
+    copyButtons.forEach((button) => {
+      button.addEventListener("click", async () => {
+        const codeElement = button
+          .closest(".code-block-wrapper")
+          ?.querySelector("pre");
+        const code = codeElement?.textContent || "";
+
+        try {
+          await navigator.clipboard.writeText(code);
+          button.textContent = "Kopiert!";
+          setTimeout(() => {
+            button.textContent = "Kopieren";
+          }, 2000);
+        } catch (err) {
+          console.error("Fehler beim Kopieren:", err);
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .code-block-content :global(pre) {
+    @apply rounded-b-lg shadow-lg m-0;
+  }
+</style>
