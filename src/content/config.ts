@@ -9,9 +9,12 @@ const projectsCollection = defineCollection({
     start: z.date(),
     end: z.date().optional(),
     technologies: z.array(z.string()),
-    github: z.string().optional(),
-    website: z.string().optional(),
-    other: z.string().optional(),
+    links: z.array(
+      z.object({
+        label: z.string(),
+        url: z.string().url(),
+      })
+    ),
   }),
 });
 

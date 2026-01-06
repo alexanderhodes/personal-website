@@ -32,10 +32,16 @@ export default config({
             itemLabel: (props) => props?.value ?? "-",
           }
         ),
-        github: fields.url({ label: "GitHub" }),
-        website: fields.url({ label: "Website" }),
-        other: fields.url({ label: "Other Link" }),
         content: fields.markdoc({ label: "Content" }),
+        links: fields.array(
+          fields.object({
+            label: fields.text({ label: "Label" }),
+            url: fields.url({ label: "URL" }),
+          }),
+          {
+            label: "Links",
+          }
+        ),
       },
       columns: ["title", "start", "end"],
     }),

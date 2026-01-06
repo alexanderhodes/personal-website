@@ -1,5 +1,4 @@
 ---
-import { Icon } from "astro-icon/components";
 import { getEntry, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import { formatTimeframe } from "../../utils/date";
@@ -40,31 +39,25 @@ const { Content } = await render(project);
   >
     <Content />
   </div>
-  <h1>Links</h1>
-  <div class="flex space-x-3">
-    {
-      project.data.website && (
-        <a
-          href={project.data.website}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Icon
-            name="feather:external-link"
-            class="hover:text-red-800 dark:text-white dark:hover:text-red-800"
-          />
-        </a>
-      )
-    }
-    {
-      project.data.github && (
-        <a href={project.data.github} target="_blank" rel="noopener noreferrer">
-          <Icon
-            name="feather:github"
-            class="hover:text-red-800 dark:text-white dark:hover:text-red-800"
-          />
-        </a>
-      )
-    }
-  </div>
+  {
+    project.data.links.length > 0 && (
+      <>
+        <h2 class="text-lg font-bold mb-2">Weitere Links</h2>
+        <ul class="list-disc list-inside mb-4">
+          {project.data.links.map((link) => (
+            <li>
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover:text-red-800 dark:text-white dark:hover:text-red-800"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </>
+    )
+  }
 </Layout>
