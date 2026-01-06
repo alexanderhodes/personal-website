@@ -25,7 +25,7 @@ const { title, description } = Astro.props;
         class="font-bold text-2xl hover:underline decoration-2 underline-offset-2 hover:text-red-800"
         >Home</a
       >
-      <div class="flex items-center">
+      <nav class="flex items-center" role="navigation">
         <a
           href="/projekte/"
           class="hover:underline decoration-2 underline-offset-2 hover:text-red-800 mr-4"
@@ -39,7 +39,7 @@ const { title, description } = Astro.props;
         <ThemeToggle client:only>
           <Icon name="feather:sun" class="w-6 h-6 dark:text-white" />
         </ThemeToggle>
-      </div>
+      </nav>
     </div>
     <slot />
     <footer>
