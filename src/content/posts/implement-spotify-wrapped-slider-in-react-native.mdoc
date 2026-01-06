@@ -1,0 +1,274 @@
+---
+title: Implement Spotify Wrapped slider in React Native
+date: 2022-12-16
+tags:
+  - reactnative
+  - animation
+  - mobile
+  - react
+url: https://dev.to/b42/implement-spotify-wrapped-slider-in-react-native-5edi
+---
+Many people know *Spotify Wrapped* which displays the listening activity for the past year. The last part of this story provides a summary about top songs, top artists, top genre and total minutes. Here the users can select between different styles of this summary that can be shared.
+
+We want to show you how to implement this component without using any third-party libraries.
+
+![Spotify Wrapped Summary](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/wz20b4dd4nj3tmrm90z6.png)
+
+## General functionality
+
+In general there's just a horizontal scrolling container displaying different styles of this summary. When scrolling it's snapped that the selected summary is always centered.
+
+## Implementing the summary component
+
+At first we create a basic summary component that is inspired  by the design of Spotify. Here, an image is displayed at the top and some data is displayed in a table format below. Furthermore, we need to think about the size of this component, because it should not take the complete screen and should be responsive to fit different screen sizes. That's why we took 60% of the screen height and about 67% of the screen width.
+
+```typescript
+const { width, height } = Dimensions.get("screen");
+
+// calculating size of summary component
+export const SUMMARY_HEIGHT = height * 0.6;
+export const SUMMARY_WIDTH = width * 0.665;
+```
+
+Implementing the design is using some flex styling and implementing some rows and columns for displaying the data. In addition, props for updating the background and text color are added.
+
+Below, you can find a snippet of this summary component. The complete implementation can be found [here](https://github.com/alexanderhodes/spotify-wrapped-summary-swipe/blob/main/src/components/Summary.tsx).
+
+```typescript
+type Props = {
+  backgroundColor: string;
+  textColor: string;
+};
+
+export const Summary: FunctionComponent<Props> = ({
+  backgroundColor,
+  textColor,
+}) => {
+  return (
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: backgroundColor,
+          height: SUMMARY_HEIGHT,
+          width: SUMMARY_WIDTH,
+        },
+      ]}
+    >
+      <View style={styles.header}>
+        <View style={[styles.headerPlaceholder, { backgroundColor: backgroundColor }]}></View>
+      </View>
+      <View style={styles.body}>
+        <View style={styles.row}>
+          <View style={styles.column}>
+            <Text style={[styles.title, { color: textColor }]}>
+              {"Top songs"}
+            </Text>
+            <Text style={[styles.text, { color: textColor }]}>{"#1 Song"}</Text>
+          </View>
+          <View style={styles.column}>
+            <Text style={[styles.title, { color: textColor }]}>
+              {"Top categories"}
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    borderRadius: 8,
+    padding: 16,
+  },
+  header: {
+    flex: 1,
+    backgroundColor: "white",
+    marginBottom: 16,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  /** Further styles **/
+});
+```
+
+Looks great so far.
+
+![Summary component](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/x47k4zrhzvbhcostkipo.png)
+
+## Displaying multiple summaries
+
+In the next step, we want to display multiple summaries next to each other. For achieving this, we can use the ScrollView with a horizontal orientation by setting the `horizontal` property. In addition, we add a container around the summaries for adding some space between them.
+
+```typescript
+export default function App() {
+  return (
+    <View style={styles.container}>
+      <View style={[styles.summaryScrollContainer, { height: SUMMARY_HEIGHT }]}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        >
+          <View style={styles.summaryContainer}>
+            <Summary backgroundColor="green" textColor="white" />
+          </View>
+          <View style={styles.summaryContainer}>
+            <Summary backgroundColor="red" textColor="white" />
+          </View>
+          <View style={styles.summaryContainer}>
+            <Summary backgroundColor="blue" textColor="white" />
+          </View>
+        </ScrollView>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  summaryScrollContainer: {
+    marginBottom: 12,
+  },
+  summaryContainer: {
+    paddingHorizontal: 8,
+  },
+});
+```
+
+Furthermore we need to center the summaries in the ScrollView using the `contentContainerStyle` property. For centering the first and last element, we need to add some padding horizontally.
+
+This padding can be calculated easily with this formula
+
+`padding = (SCREEN_WIDTH - (SUMMARY_WIDTH + SUMMARY_PADDING)) / 2`
+
+Translated into code:
+
+```typescript
+  const screenWidth = Dimensions.get("screen").width;
+
+  // 16 is padding that is added horizontally around summary
+  const summaryWidth = SUMMARY_WIDTH + 16
+  // padding that is located on the left and right for centering the summary item
+  const horizontalPadding = (screenWidth - summaryWidth) / 2;
+```
+
+Now we got the summary items displayed in a centered and horizontal ScrollView.
+
+![Summary items in ScrollView](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/auhu2urc6vliov2s4kvz.png)
+
+## Improving the scrolling
+
+When inspecting the scrolling behavior in Spotify, some snapping can be found. We can implement this behavior in the ScrollView using `snapToInterval`. This property helps to stop at a [specific position](https://reactnative.dev/docs/scrollview#snaptointerval). We can use our summaryWidth variable (containing SUMMARY_WIDTH and padding) for this.
+
+Another useful property is `decelerationRate`, which is used for defining [speed for users fingers lift when scrolling](https://reactnative.dev/docs/scrollview#decelerationrate).
+
+```typescript
+return (
+  <ScrollView
+    ref={scrollViewRef}
+    horizontal
+    showsHorizontalScrollIndicator={false}
+    contentContainerStyle={{ paddingHorizontal: horizontalPadding }}
+    decelerationRate="fast"
+    // snap interval for width of summary items
+    snapToInterval={summaryWidth}
+  >
+  {/* summary components  */}
+  </ScrollView>
+)
+```
+
+Now it's already working fine.
+
+## Implement pagination dots
+
+Next step is to implement the dots for displaying the current summary item. At first, we need to store the index of the current summary item in the state. And update this when a dot is pressed.
+
+```typescript
+// further code
+const [selected, setSelected] = useState(0);
+
+const changePage = (index: number) => {
+  setSelected(index)
+}
+// further code
+```
+
+We place the dots below the scroll view and in a row. The dot itself is just a circle with a background color which is changed when it's selected. Furthermore it accepts a callback for changing the current summary when it's pressed.
+
+```typescript
+<View style={styles.dotsContainer}>
+  <Dot selected={selected === 0} onPress={() => changePage(0)} />
+  <Dot selected={selected === 1} onPress={() => changePage(1)} />
+  <Dot selected={selected === 2} onPress={() => changePage(2)} />
+</View>
+```
+
+Pressing the dot is working, but it's not connected to the ScrollView yet. For achieving this we need to do two things. First, creating a reference of the ScrollView that we can animate the scrolling when a dot is pressed. And second, we need to update the state and scrolling finished.
+
+**Animate scrolling when dot is pressed**
+
+When pressing a dot the position of the x axis needs to be calculated. This can be done easily by multiplying selected index with the summary width.
+
+```typescript
+const scrollViewRef = useRef<ScrollView>(null)
+
+const changePage = (index: number) => {
+  if (scrollViewRef.current) {
+    setSelected(index)
+    // calculate scroll position by multiplying selected index with with of summary item
+    scrollViewRef.current.scrollTo({ x: index * summaryWidth, animated: true })
+  }
+}
+
+return (
+  <ScrollView
+    ref={scrollViewRef}
+  >
+  {/* summary components  */}
+  </ScrollView>
+)
+```
+
+**Updating state when scrolling finished**
+
+Updating the state can be done listening to `onMomentumScrollEnd` [property of ScrollView](https://reactnative.dev/docs/scrollview#onmomentumscrollend). It provides some information about the current scroll position when scrolling ended. We can calculate the current index by dividing the contentOffset for x axis with the summary width.
+
+```typescript
+const onScrollEnd = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+  const item = Math.round(event.nativeEvent.contentOffset.x / summaryWidth)
+  setSelected(item)
+}
+
+return (
+  <ScrollView
+    // updating the index when scroll is ended
+    onMomentumScrollEnd={onScrollEnd}
+  >
+   {/* summary components  */}
+  </ScrollView>
+)
+```
+
+## Result
+
+The result looks pretty nice. We can just add the `overScrollMode` property and set it to never. in the ScrollView. It removes [some dragging visuals on Android](https://reactnative.dev/docs/scrollview#overscrollmode-android).
+
+![Result](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/cqckyq7rjnm81cyuwegm.gif)
+
+## Further thoughts
+
+The same thing can be achieved as well with a FlatList instead of a ScrollView. Here you just need to create an array of items for rendering the different summary styles.
+
+The only feature missing is the sharing functionality where you can share the selected summary style on social media.
+
+## Resources
+
+- GitHub Repository [https://github.com/alexanderhodes/spotify-wrapped-summary-swipe](https://github.com/alexanderhodes/spotify-wrapped-summary-swipe)
+- Expo Snack [https://snack.expo.dev/@alexander.hodes/spotify-wrapped-summary-swipe](https://snack.expo.dev/@alexander.hodes/spotify-wrapped-summary-swipe)

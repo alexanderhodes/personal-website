@@ -1,0 +1,51 @@
+---
+import { getEntry, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+const { id } = Astro.params;
+if (id === undefined) {
+  return Astro.redirect("/404");
+}
+
+const cleanedId = id.replace(".mdoc", ""); // Clean the id if necessary
+
+const post = await getEntry("posts", cleanedId);
+if (!post) {
+  return Astro.redirect("/404");
+}
+
+const { Content } = await render(post);
+---
+
+<Layout
+  title={`alexander - ${post.data.title}`}
+  description="alexander - full stack developer"
+>
+  <h1 class="text-xl font-bold mb-2">{post.data.title}</h1>
+  <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+    {
+      new Date(post.data.date).toLocaleDateString("de-DE", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    }
+  </p>
+  <div class="flex flex-row space-x-2">
+    {
+      post.data.tags?.map((tag) => (
+        <span class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
+          {tag}
+        </span>
+      ))
+    }
+  </div>
+  <div
+    class="prose dark:prose-invert
+         prose-pre:rounded-lg prose-pre:shadow-lg
+         prose-code:before:content-[''] prose-code:after:content-['']
+         mb-4"
+  >
+    <Content />
+  </div>
+</Layout>

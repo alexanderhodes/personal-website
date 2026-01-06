@@ -54,5 +54,22 @@ export default config({
         visible: fields.checkbox({ label: "Visible" }),
       },
     }),
+    posts: collection({
+      label: "Posts",
+      slugField: "title",
+      path: "src/content/posts/**",
+      format: { contentField: "content" },
+      schema: {
+        title: fields.slug({ name: { label: "Title" } }),
+        date: fields.date({ label: "Date" }),
+        content: fields.markdoc({ label: "Content" }),
+        tags: fields.array(fields.text({ label: "Tag" }), {
+          label: "Tags",
+          itemLabel: (props) => props?.value ?? "-",
+        }),
+        url: fields.text({ label: "URL" }),
+      },
+      columns: ["title", "date"],
+    }),
   },
 });

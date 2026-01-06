@@ -1,0 +1,555 @@
+---
+title: Test your React Native app with Maestro
+date: 2022-12-22
+tags:
+  - reactnative
+  - maestro
+  - mobile
+  - testing
+url: https://dev.to/b42/test-your-react-native-app-with-maestro-5bfj
+---
+Testing is always something that's important in app development, but often it's still done manually by testers or developers. Sometimes it can occur that one of the main workflows, e.g. the onboarding or sign up, fails in production because it hasn't been tested before. A couple of weeks ago, we've found [Maestro](https://maestro.mobile.dev) which can be used for automating UI tests in a simple and effective way.
+
+We want to show you in this article how you can integrate Maestro with a React Native app. For achieving this we will built a small application showing a sign in form and explain some core features of Maestro.
+
+## Developing the example app
+
+**Initializing the app**
+
+This first step is to [create a React Native app](https://reactnative.dev/docs/environment-setup). Here, you can select between the Expo and React Native CLI approach. We will create this tutorial for both approaches, because there are some special notes about creating flows with Maestro for Expo apps. The React Native CLI code can be found [here](https://github.com/alexanderhodes/react-native-cli-maestro-example). The Expo app code can be found [here](https://github.com/alexanderhodes/react-native-expo-maestro-example).
+
+```bash
+# Create React Native app with React Native CLI
+$ npx react-native init ReactNativeMaestroExample --template react-native-template-typescript
+# Create React Native app with Expo
+$ npx create-expo-app -t expo-template-blank-typescript react-native-maestro-example
+```
+
+**Changing the app identifier**
+
+One requirement for running the flows that we will create is that the app package name/ bundle identifier is `com.example.app`. [Here](https://stackoverflow.com/a/44481467) you can find an instruction for changing it in a React Native CLI app. In Expo apps, you need to set `ios.bundleIdentifier` and `android.package` properties in the `app.json` file. Further docs for [iOS](https://docs.expo.dev/versions/latest/config/app/#bundleidentifier) and [Android](https://docs.expo.dev/versions/latest/config/app/#package) can be found in the Expo docs.
+
+```json
+{
+  /** further config **/
+  "ios": {
+    "bundleIdentifier": "com.example.app"
+  },
+  "android": {
+    "package": "com.example.app"
+  }
+}
+```
+
+**Implementing components**
+
+Our example app with contain a single screen showing a sign in form with two inputs and a sign in button. If the username and password entered are valid (longer than 8 characters) a success message will be displayed below the sign in button. For implementing this, we use basic React Native components and style them using the StyleSheet. Below your can find the code of this sign in form.
+
+```tsx
+export default function App() {
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [valid, setValid] = useState(false);
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Username</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Username"
+          onChange={(e) => setUsername(e.nativeEvent.text)}
+          testID="usernameInput"
+        />
+      </View>
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Password</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          secureTextEntry
+          onChange={(e) => setPassword(e.nativeEvent.text)}
+          testID="passwordInput"
+        />
+      </View>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          if (username.length > 0 && password.length > 0) {
+            setValid(true);
+          } else {
+            setValid(false);
+          }
+        }}
+        testID="signInButton"
+      >
+        <Text style={styles.buttonText}>Sign in</Text>
+      </TouchableOpacity>
+      {valid ? <Text style={styles.successText}>Sign in successfully</Text> : null}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: "#fff",
+    justifyContent: "center",
+  },
+  inputGroup: {
+    marginBottom: 16,
+  },
+  label: {
+    fontSize: 12,
+    fontWeight: "bold",
+    marginBottom: 6,
+  },
+  input: {
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "gray",
+    padding: 12,
+    width: "100%",
+    fontSize: 18,
+  },
+  button: {
+    borderRadius: 8,
+    padding: 12,
+    backgroundColor: "black",
+    alignItems: "center",
+    marginBottom: 8,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "white",
+  },
+  successText: {
+    fontSize: 16,
+    color: "green",
+    alignSelf: 'center',
+  },
+});
+```
+
+![Screenshot Sign In](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/n86rqyjvpfy82p7foqle.png)
+
+![Screenshot Sign In Success](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/zibrziqkbexconbabzvw.png)
+
+## Installing maestro
+
+Maestro will be installed using the terminal, because it will be used with the CLI. Installation for Mac OS and Linux requires just to commands. A detailed instruction about installing and upgrading Maestro can be found in the [Maestro docs](https://maestro.mobile.dev/getting-started/installing-maestro).
+
+```bash
+# install and upgrade maestro
+$ curl -Ls "https://get.maestro.mobile.dev" | bash
+```
+
+Running flows on iOS Simulator requires installation of [Facebook IDB](https://fbidb.io).
+
+```bash
+$ brew tap facebook/fb
+$ brew install facebook/fb/idb-companion
+```
+
+The installation of Maestro on Windows is a bit more complex. The detailed instruction can be found in the [Maestro docs](https://maestro.mobile.dev/getting-started/installing-maestro/windows).
+
+You can check if maestro is installed by checking the version. It should print the version number, e.g. 1.17.
+
+```bash
+$ maestro -v
+```
+
+## Creating test flows
+
+Our workflow should look like this:
+
+1. Start the app
+1. Enter username
+1. Enter password
+1. Press sign in button
+1. Check if success message is visible
+
+### Maestro studio
+
+Maestro studio can be used for inspecting the hierarchy of your app. When opening Maestro studio a new window in your browser will be opened showing a screenshot of your app and the clickable elements.
+
+```bash
+$ maestro studio
+```
+
+![Maestro studio](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kz59dtk066hssvt2je4o.png)
+
+### Example workflow "sign in"
+
+The first step in our workflow is to start the app. For this we can use start [launchApp](https://maestro.mobile.dev/reference/app-lifecycle#launchapp) command. Here you can add further options like clearing the state, clearing the keychain or stop the app before launching. We don't need them in our example.
+
+```yaml
+appId: com.example.app
+---
+- launchApp:
+    appId: com.example.app
+```
+
+The next step is to tap on the text field for entering the username. Maestro studio shows that we can achieve this by using one of the following commands.
+
+![Maestro studio](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/yddys1j0ktrjxauvx0g7.png)
+
+The easiest one looks like this:
+
+```yaml
+# tap on username
+- tapOn:
+    text: "Username"
+    index: 1
+```
+
+The next step is to enter a user name. For [Text Input](https://maestro.mobile.dev/reference/text-input), maestro provides different possibilities. One would be to enter a static text. This text could be as well defined as [constant or passed as parameter](https://maestro.mobile.dev/advanced/parameters-and-constants). In addition, Maestro provides some random text that can be entered, e.g. [email, person name, number or text](https://maestro.mobile.dev/reference/text-input#input-random-text).
+
+```yaml
+# enter text
+- inputText: "Hello World"
+# enter random email
+- inputRandomEmail       
+# enter random person name
+- inputRandomPersonName  
+# enter random integer
+- inputRandomNumber   
+# enter random text
+- inputRandomText
+```
+
+After entering the text the keyboard needs to be closed that no component is displayed below the keyboard. This can be achieved using [hideKeyboard](https://maestro.mobile.dev/reference/keyboard). This is the part for entering the username by focusing the text field, entering a random person name and hiding the keyboard. Nearly the same thing needs to be done for the password as well. Here, we just need to replace Username text with Password.
+
+```yaml
+# tap on username
+- tapOn:
+    text: "Username"
+    index: 1
+# enter username
+- inputRandomPersonName
+# hide keyboard
+- hideKeyboard
+```
+
+After entering username and password, clicking the sign in button is the next step. This can be done as well using the [tapOn](https://maestro.mobile.dev/reference/tap-on-view). Here we pass the text of the button.
+
+```yaml
+# tap on sign in
+- tapOn: "Sign in"
+# alternative: tap on sign in (does the same)
+- tapOn:
+    text: "Sign in"
+```
+
+The final step is to check if sign up was successful by checking if the success message is displayed. This can be done using [Assertions](https://maestro.mobile.dev/reference/assertions). Assertions help to check if an element is visible or not. The result can be used as well for running conditional flows.
+
+The success message in our example app can be checked with this:
+
+```yaml
+- assertVisible: "Sign in successfully"
+```
+
+The complete workflow is shown below.
+
+```yaml
+appId: com.example.app
+---
+- launchApp:
+    appId: com.example.app
+# tap on username
+- tapOn:
+    text: "Username"
+    index: 1
+# enter username
+- inputRandomPersonName
+# hide keyboard
+- hideKeyboard
+# tap on password
+- tapOn:
+    text: "Password"
+    index: 1
+# enter password
+- inputRandomText
+# hide keyboard
+- hideKeyboard
+# tap on sign in
+- tapOn: "Sign in"
+- assertVisible: "Sign in successfully"
+```
+
+Further actions that can be executed during the flow can be found in the [Maestro documentation](https://maestro.mobile.dev).
+
+## Running workflows
+
+### Run workflow local
+
+After finishing the development of the workflow we can run it locally using `maestro test`. Here you can specify if you want to run a single workflow or all workflows in a specific directory.
+
+```bash
+# run single flow
+$ maestro test .maestro/sign-in-flow.yaml
+# run all flows in a directory
+$ maestro test .maestro
+```
+
+![Sign In Workflow](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/00kmg3f2y2dj3k8v7b1q.gif)
+
+### Run workflow in the cloud
+
+After signing up for maestro cloud, you can run your tests as well in the cloud. This cloud execution will be useful if you want to run your workflows in your CI/ CD pipeline.
+
+```bash
+$ maestro cloud --apiKey <apiKey> <appFile> .maestro/
+```
+
+## Tips and tricks
+
+### Using testID property
+
+Writing test flows is really easy and straight forward. One problem comes up if you want to test your application in different languages. Normally, you would need to create a test flow for each languages which increases maintainability and development time with every new language.
+
+For this problem you can use the `testID` property which is provided for [buttons](https://reactnative.dev/docs/button#testid), [texts](https://reactnative.dev/docs/text#testid), [views](https://reactnative.dev/docs/view#testid), [images](https://reactnative.dev/docs/image#testid) and other components. This property is mapped to the `id` property in Maestro. After integrating the `testID` you an access an element, like this:
+
+```yaml
+# using testID property
+- tapOn:
+    id: "signInButton"
+# using text
+- tapOn:
+    text: "Username"
+    index: 1
+```
+
+This makes it less dependent on the text or translations shown in your app. In some libraries using the `testID` property is not working, but you will find this out while inspecting the hierarchy of your app.
+
+```tsx
+<TextInput
+  style={styles.input}
+  placeholder="Password"
+  secureTextEntry
+  onChange={(e) => setPassword(e.nativeEvent.text)}
+  testID="passwordInput"
+/>
+```
+
+Furthermore using the `testID` makes it more easy to find the component in your app.
+
+### Developing flows with Expo
+
+Developing maestro test flows with [Expo](https://docs.expo.dev) is a bit different compared to development for React Native apps created with the React Native CLI. The difference is that your app built with Expo is started within the [Expo Go App](https://docs.expo.dev/workflow/expo-go/). This means that you're not able to start your test workflow by identifying your app with the bundle identifier. If you would do so, the workflow would fail. Instead you can open your app with [openLink](https://maestro.mobile.dev/reference/open-link) from Maestro. Here you just need to enter the url which is exposed while starting your expo app locally. As well you can just use your localhost for doing this, e.g. exp://127.0.0.1:19000. You need to keep in mind that the localhost would not work if you connect your smartphone via USB to your computer or laptop.
+
+```yaml
+# common way to start your app
+- launchApp:
+    appId: com.example.app
+# needed to open app in expo
+- openLink: exp://127.0.0.1:19000
+```
+
+Some examples for creating a workflow using expo can be found in our [example repository](https://github.com/alexanderhodes/react-native-expo-maestro-example)
+
+### Recording flows
+
+Another feature provided by Maestro is recording flows. Here you will get a screen recording of your device where the flow is executed. Next to it a terminal window with the executed steps is shown. When the record is finished, you will see a link in your terminal window that can be used for downloading the video as mp4 file.
+
+```bash
+# start video recording
+$ maestro record flow-file.yaml 
+```
+
+![Maestro Record](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/8firxkxmhog785bnfpdo.png)
+
+Below you can find an example recording.
+
+![Maestro recording](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/f6ej522bkby97ak0p3tu.gif)
+
+### Variables and parameters
+
+Instead of using random text like in the example at the top, you can use [parameters and constants](https://maestro.mobile.dev/advanced/parameters-and-constants) for passing data to your flow. One way is to push data with external parameters into your flow. These parameters will be defined when starting your workflow in the terminal. Below you can find the sign-in workflow updated with external parameters for USERNAME and PASSWORD.
+
+```yaml
+appId: com.example.app
+---
+- launchApp:
+    appId: com.example.app
+# tap on username
+- tapOn:
+    id: "usernameInput"
+# enter username
+- inputText: ${USERNAME}
+# hide keyboard
+- hideKeyboard
+# tap on password
+- tapOn:
+    id: "passwordInput"
+# enter password
+- inputText: ${PASSWORD}
+# hide keyboard
+- hideKeyboard
+# tap on sign in
+- tapOn:
+    id: "signInButton"
+- assertVisible: "Sign in successfully"
+```
+
+You can run this workflow like this
+
+```bash
+$ maestro test -e USERNAME="Test User" -e PASSWORD=Test123456 .maestro/sign-in-flow-external-parameters.yaml
+```
+
+Instead of passing the data as external parameters, you can define them as well as constants in your flow. The only changed we need to do is to define the constants at the top of the workflow file below the appId. The syntax for accessing the variables stays the same.
+
+```yaml
+appId: com.example.app
+env:
+    USERNAME: "Test User"
+    PASSWORD: Test123456
+---
+- launchApp:
+    appId: com.example.app
+# tap on username
+- tapOn:
+    id: "usernameInput"
+# enter username
+- inputText: ${USERNAME}
+# hide keyboard
+- hideKeyboard
+# tap on password
+- tapOn:
+    id: "passwordInput"
+# enter password
+- inputText: ${PASSWORD}
+# hide keyboard
+- hideKeyboard
+# tap on sign in
+- tapOn:
+    id: "signInButton"
+- assertVisible: "Sign in successfully"
+```
+
+This workflow can be started like any other flow without any external parameters.
+
+```bash
+$ maestro test .maestro/sign-in-flow-constants.yaml
+```
+
+One example for using the external parameters will be passing the app id if you have different app ids for different environments, e.g. development, alpha and production. With replacing the app id as external parameter you can reuse your flows for different app versions.
+
+### Nested flows
+
+[Nested flows](https://maestro.mobile.dev/advanced/nested-flows) can help to move recurring flows, e.g. sign-in or entering text, into separate flow files for reducing the complexibility of flows and increasing the maintainability.
+
+Creating nested flows works the same way like normal flows. We will create a nested flow for entering the text in the sign in flow. This flow consists of three steps: focusing text input, entering text and hiding keyboard.
+
+```yaml
+# tap on username
+- tapOn:
+    id: "usernameInput"
+# enter username
+- inputRandomPersonName
+# hide keyboard
+- hideKeyboard
+```
+
+Moving this into a subflow looks like this. We will use external parameters for passing the text input id and the text.
+
+```yaml
+appId: com.example.app
+
+---
+# tap on text input
+- tapOn:
+    id: ${TEXT_INPUT_ID}
+# enter text
+- inputText: ${TEXT}
+# hide keyboard
+- hideKeyboard
+```
+
+When integrating this subflow into the main flow, we can use the runFlow command with passing external parameters as env. The subflow will be defined as file.
+
+```yaml
+# enter username
+- runFlow:
+    file: subflow-enter-text.yaml
+    env:
+      TEXT_INPUT_ID: usernameInput
+      TEXT: "Test User"
+```
+
+The complete sign in flow will look like this after integrating the subflows.
+
+```yaml
+appId: com.example.app
+---
+- launchApp:
+    appId: com.example.app
+# enter username
+- runFlow:
+    file: subflows/subflow-enter-text.yaml
+    env:
+      TEXT_INPUT_ID: usernameInput
+      TEXT: "Test User"
+# enter password
+- runFlow:
+    file: subflows/subflow-enter-text.yaml
+    env:
+      TEXT_INPUT_ID: passwordInput
+      TEXT: Test123456
+# tap on sign in
+- tapOn:
+    id: "signInButton"
+- assertVisible: "Sign in successfully"
+```
+
+### Exporting test report
+
+```bash
+# creates test report in console
+$ maestro test --format junit .maestro/sign-in-flow-testid.yaml 
+# creates test report as file
+$ maestro test --format junit --output result.xml .maestro/sign-in-flow-testid.yaml 
+```
+
+The result will look like this.
+
+```xml
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites>
+  <testsuite name="Test Suite" device="iPhone 14 Plus - iOS 16.1 - E7F8022E-939F-4165-B887-F342740BFCE6" tests="1" failures="0">
+    <testcase id="sign-in-flow-testid" name="sign-in-flow-testid"/>
+  </testsuite>
+</testsuites>
+```
+
+The result provides a good overview about the test results when running multiple workflows. We can do this by running every test in the [React Native CLI example](https://github.com/alexanderhodes/react-native-cli-maestro-example).
+
+```bash
+$ maestro test --format junit --output results.xml -e USERNAME="Test User" -e PASSWORD="Test123456" .maestro
+```
+
+The result for multiple workflows looks like this.
+
+```xml
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites>
+  <testsuite name="Test Suite" device="iPhone 14 Plus - iOS 16.1 - E7F8022E-939F-4165-B887-F342740BFCE6" tests="5" failures="0">
+    <testcase id="sign-in-flow" name="sign-in-flow"/>
+    <testcase id="sign-in-flow-with-subflow" name="sign-in-flow-with-subflow"/>
+    <testcase id="sign-in-flow-constants" name="sign-in-flow-constants"/>
+    <testcase id="sign-in-flow-testid" name="sign-in-flow-testid"/>
+    <testcase id="sign-in-flow-external-parameters" name="sign-in-flow-external-parameters"/>
+  </testsuite>
+</testsuites>
+```
+
+## Further resources
+
+- [Maestro Documentation](https://maestro.mobile.dev)
+- [Maestro GitHub Repository](https://github.com/mobile-dev-inc/maestro)
+- [Maestro Cloud Documentation](https://cloud.mobile.dev)
+- [Example Repository for React Native CLI App](https://github.com/alexanderhodes/react-native-cli-maestro-example)
+- [Example Repository for Expo React Native App](https://github.com/alexanderhodes/react-native-expo-maestro-example)

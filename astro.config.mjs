@@ -11,6 +11,16 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
+  markdown: {
+    shikiConfig: {
+      theme: "github-dark",
+      themes: {
+        light: "github-light",
+        dark: "github-dark",
+      },
+      wrap: true,
+    },
+  },
   site: "https://alexanderhodes.de",
   integrations: [
     tailwind(),

@@ -26,7 +26,18 @@ const technologiesCollection = defineCollection({
   }),
 });
 
+const postsCollection = defineCollection({
+  type: "content",
+  schema: z.object({
+    title: z.string(),
+    date: z.date(),
+    tags: z.array(z.string()).optional(),
+    url: z.string().optional(),
+  }),
+});
+
 export const collections = {
   projects: projectsCollection,
   technologies: technologiesCollection,
+  posts: postsCollection,
 };
