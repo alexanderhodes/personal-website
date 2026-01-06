@@ -60,7 +60,7 @@ const technologies = await getCollection("technologies", (item) => {
         <li>
           <a
             class="hover:underline decoration-2 underline-offset-2 hover:text-red-800"
-            href={`/projekte/${project.id}`}
+            href={`/projekte/${project.slug}`}
           >
             {project.data.title}
           </a>

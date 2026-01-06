@@ -1,19 +1,16 @@
 ---
-import { getEntry, render } from "astro:content";
+import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 
-const { id } = Astro.params;
-if (id === undefined) {
-  return Astro.redirect("/404");
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+  return posts.map((post) => ({
+    params: { id: post.slug },
+    props: { post },
+  }));
 }
 
-const cleanedId = id.replace(".mdoc", ""); // Clean the id if necessary
-
-const post = await getEntry("posts", cleanedId);
-if (!post) {
-  return Astro.redirect("/404");
-}
-
+const { post } = Astro.props;
 const { Content } = await render(post);
 ---
 
