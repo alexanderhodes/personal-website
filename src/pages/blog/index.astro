@@ -8,8 +8,14 @@ const sortedPosts = [...posts].sort((a, b) => {
 });
 ---
 
-<Layout title="alexander - Blog" description="alexander - full stack developer">
-  <h1>Blog</h1>
+<Layout
+  title="alexander - Blog"
+  description="Technische Blog-Beiträge über React Native, Mobile Development, Testing mit Maestro und moderne Webentwicklung. Praxisorientierte Tutorials und Erfahrungen."
+  keywords="Blog, React Native, Mobile Development, Maestro Testing, Web Development, Tutorials"
+>
+  <h1 class="text-xl font-bold mb-4">
+    Technische Blog-Beiträge zu Web & Mobile Development
+  </h1>
   {
     sortedPosts.map((post) => (
       <div class="mb-4">

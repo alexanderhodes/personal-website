@@ -1,0 +1,55 @@
+# Allgemeine Crawler
+User-agent: *
+Allow: /
+Disallow: /api/
+Sitemap: https://alexanderhodes.com/sitemap-index.xml
+
+# OpenAI GPTBot
+User-agent: GPTBot
+Allow: /
+Disallow: /projekte/
+
+# Google Bard/Gemini
+User-agent: Google-Extended
+Allow: /
+Disallow: /projekte/
+
+# Anthropic Claude
+User-agent: anthropic-ai
+Allow: /
+Disallow: /projekte/
+
+# Common Crawl (oft für AI Training genutzt)
+User-agent: CCBot
+Allow: /
+Disallow: /projekte/
+
+# ChatGPT-User (browsing)
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /projekte/
+
+# Bytespider (ByteDance/TikTok AI)
+User-agent: Bytespider
+Allow: /
+Disallow: /projekte/
+
+# Omgili (AI scraper)
+User-agent: Omgilibot
+Allow: /
+Disallow: /projekte/
+
+# Facebook AI
+User-agent: FacebookBot
+Allow: /
+Disallow: /projekte/
+
+# Diffbot
+User-agent: Diffbot
+Allow: /
+Disallow: /projekte/
+
+# Applebot-Extended (Apple AI)
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /projekte/

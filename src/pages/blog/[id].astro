@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
+import StructuredData from "../../components/StructuredData.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -24,7 +25,29 @@ const metaDescription =
 
 // Verwende Tags als Keywords
 const keywords = post.data.tags?.join(", ") || "";
+
+const blogPostSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.data.title,
+  datePublished: post.data.date.toISOString(),
+  dateModified: post.data.date.toISOString(),
+  author: {
+    "@type": "Person",
+    name: "Alexander Hodes",
+    jobTitle: "Full Stack Developer",
+  },
+  keywords: post.data.tags || [],
+  description: metaDescription,
+  url: `${Astro.site}blog/${post.slug}`,
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": `${Astro.site}blog/${post.slug}`,
+  },
+};
 ---
+
+<StructuredData data={blogPostSchema} />---
 
 <Layout
   title={`alexander - ${post.data.title}`}

@@ -1,6 +1,7 @@
 ---
-import { getCollection, getEntry, render } from "astro:content";
+import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
+import StructuredData from "../../components/StructuredData.astro";
 import { formatTimeframe } from "../../utils/date";
 
 export async function getStaticPaths() {
@@ -26,8 +27,25 @@ const metaDescription =
 
 // Verwende Technologies als Keywords
 const keywords = project.data.technologies?.join(", ") || "";
+
+const projectSchema = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  name: project.data.title,
+  description: metaDescription,
+  author: {
+    "@type": "Person",
+    name: "Alexander Hodes",
+    jobTitle: "Full Stack Developer",
+  },
+  dateCreated: project.data.start.toISOString(),
+  ...(project.data.end && { dateModified: project.data.end.toISOString() }),
+  keywords: project.data.technologies,
+  url: `${Astro.site}projekte/${project.slug}`,
+};
 ---
 
+<StructuredData data={projectSchema} />
 <Layout
   title={`alexander - ${project.data.title}`}
   description={metaDescription || "alexander - full stack developer"}

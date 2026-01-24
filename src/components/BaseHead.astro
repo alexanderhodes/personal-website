@@ -25,6 +25,9 @@ const { title, description, keywords } = Astro.props;
 <meta name="description" content={description} />
 {keywords && <meta name="keywords" content={keywords} />}
 
+<!-- Canonical URL -->
+<link rel="canonical" href={Astro.url} />
+
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={Astro.url} />
