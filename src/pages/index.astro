@@ -10,6 +10,13 @@ const sortedProjects = [...projects].sort((a, b) => {
 const technologies = await getCollection("technologies", (item) => {
   return item.data.visible;
 });
+
+const posts = await getCollection("posts");
+const sortedPosts = [...posts]
+  .sort((a, b) => {
+    return new Date(b.data.date).getTime() - new Date(a.data.date).getTime();
+  })
+  .slice(0, 3);
 ---
 
 <Layout title="alexander - home" description="alexander - full stack developer">
@@ -69,5 +76,30 @@ const technologies = await getCollection("technologies", (item) => {
     }
   </ul>
   <h3 class="font-bold">tech stack</h3>
-  <p>{technologies.map((t) => t.data.title).join(", ")}</p>
+  <p class="mb-3">{technologies.map((t) => t.data.title).join(", ")}</p>
+  <h3 class="font-bold">neueste Blog Posts</h3>
+  <ul class="mb-3">
+    {
+      sortedPosts.map((post) => (
+        <li class="mb-2">
+          <a
+            class="hover:underline decoration-2 underline-offset-2 hover:text-red-800"
+            href={`/blog/${post.slug}`}
+          >
+            {post.data.title}
+          </a>
+          <span class="text-sm text-gray-600 dark:text-gray-400 ml-2">
+            {new Date(post.data.date).toLocaleDateString("de-DE", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+  <p>
+    <a href="/blog" class="link"> Alle Posts anzeigen → </a>
+  </p>
 </Layout>
