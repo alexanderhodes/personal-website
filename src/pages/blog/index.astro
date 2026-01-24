@@ -8,11 +8,8 @@ const sortedPosts = [...posts].sort((a, b) => {
 });
 ---
 
-<Layout
-  title="alexander - posts"
-  description="alexander - full stack developer"
->
-  <h1>Posts</h1>
+<Layout title="alexander - Blog" description="alexander - full stack developer">
+  <h1>Blog</h1>
   {
     sortedPosts.map((post) => (
       <div class="mb-4">

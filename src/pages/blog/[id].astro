@@ -12,11 +12,24 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+// Extrahiere die ersten 160 Zeichen des Contents für die Meta Description
+const contentRaw = post.body || "";
+const plainText = contentRaw
+  .replace(/---[\s\S]*?---/, "")
+  .replace(/[#*`\[\]]/g, "")
+  .trim();
+const metaDescription =
+  plainText.substring(0, 160).trim() + (plainText.length > 160 ? "..." : "");
+
+// Verwende Tags als Keywords
+const keywords = post.data.tags?.join(", ") || "";
 ---
 
 <Layout
   title={`alexander - ${post.data.title}`}
-  description="alexander - full stack developer"
+  description={metaDescription || "alexander - full stack developer"}
+  keywords={keywords}
 >
   <h1 class="text-xl font-bold mb-2">{post.data.title}</h1>
   <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">

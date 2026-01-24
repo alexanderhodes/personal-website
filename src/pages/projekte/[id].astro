@@ -13,11 +13,25 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
+
+// Extrahiere die ersten 160 Zeichen des Contents für die Meta Description
+const contentRaw = project.body || "";
+const plainText = contentRaw
+  .replace(/---[\s\S]*?---/, "")
+  .replace(/[#*`\[\]]/g, "")
+  .trim();
+const metaDescription =
+  project.data.description ||
+  plainText.substring(0, 160).trim() + (plainText.length > 160 ? "..." : "");
+
+// Verwende Technologies als Keywords
+const keywords = project.data.technologies?.join(", ") || "";
 ---
 
 <Layout
   title={`alexander - ${project.data.title}`}
-  description="alexander - full stack developer"
+  description={metaDescription || "alexander - full stack developer"}
+  keywords={keywords}
 >
   <h1 class="text-xl font-bold mb-2">{project.data.title}</h1>
   <div class="mb-4">
