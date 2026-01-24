@@ -53,3 +53,10 @@ Disallow: /projekte/
 User-agent: Applebot-Extended
 Allow: /
 Disallow: /projekte/
+
+# Mistral/Le Chat (erlaubt alle Seiten)
+User-agent: Mistral-Crawler
+Allow: /
+
+User-agent: MistralBot
+Allow: /
