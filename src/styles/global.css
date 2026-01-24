@@ -16,6 +16,26 @@ body {
   text-transform: lowercase;
 }
 
+/* Screen Reader Only - für Barrierefreiheit */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Fokus-Sichtbarkeit für Links */
+a:focus-visible {
+  outline: 2px solid #991b1b;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 ::selection {
   background-color: #ef4444;
   color: white;

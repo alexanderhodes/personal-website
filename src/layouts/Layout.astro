@@ -18,27 +18,41 @@ const { title, description, keywords } = Astro.props;
   <body
     class="flex flex-col min-h-screen max-w-screen-lg mx-auto py-4 px-4 dark:bg-black dark:text-white"
   >
-    <div class="flex justify-between items-end mb-3">
-      <a
-        href="/"
-        class="font-bold text-2xl hover:underline decoration-2 underline-offset-2 hover:text-red-800"
-        >Home</a
-      >
-      <nav class="flex items-center" role="navigation">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-red-800 focus:text-white focus:rounded"
+    >
+      Zum Hauptinhalt springen
+    </a>
+    <header>
+      <div class="flex justify-between items-end mb-3">
         <a
-          href="/projekte/"
-          class="hover:underline decoration-2 underline-offset-2 hover:text-red-800 mr-4"
-          >Projekte</a
+          href="/"
+          class="font-bold text-2xl hover:underline decoration-2 underline-offset-2 hover:text-red-800 focus:outline-none focus:ring-2 focus:ring-red-800 focus:ring-offset-2 dark:focus:ring-offset-black"
+          aria-label="Zur Startseite">Home</a
         >
-        <a
-          href="/blog/"
-          class="hover:underline decoration-2 underline-offset-2 hover:text-red-800 mr-4"
-          >Blog</a
+        <nav
+          class="flex items-center"
+          role="navigation"
+          aria-label="Hauptnavigation"
         >
-      </nav>
-    </div>
-    <slot />
-    <footer>
+          <a
+            href="/projekte/"
+            class="hover:underline decoration-2 underline-offset-2 hover:text-red-800 mr-4 focus:outline-none focus:ring-2 focus:ring-red-800 focus:ring-offset-2 dark:focus:ring-offset-black"
+            >Projekte</a
+          >
+          <a
+            href="/blog/"
+            class="hover:underline decoration-2 underline-offset-2 hover:text-red-800 mr-4 focus:outline-none focus:ring-2 focus:ring-red-800 focus:ring-offset-2 dark:focus:ring-offset-black"
+            >Blog</a
+          >
+        </nav>
+      </div>
+    </header>
+    <main id="main-content">
+      <slot />
+    </main>
+    <footer role="contentinfo">
       <Footer />
     </footer>
   </body>

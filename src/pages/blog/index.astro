@@ -28,7 +28,11 @@ const sortedPosts = [...posts].sort((a, b) => {
           })}
         </p>
 
-        <a href={`/blog/${post.slug}`} class="link">
+        <a
+          href={`/blog/${post.slug}`}
+          class="link"
+          aria-label={`${post.data.title} - Mehr lesen`}
+        >
           Mehr lesen
         </a>
       </div>

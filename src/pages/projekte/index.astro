@@ -37,7 +37,11 @@ const sortedProjects = [...projects].sort((a, b) => {
             {project.data.technologies.join(" -  ")}
           </p>
         </div>
-        <a href={`/projekte/${project.slug}`} class="link">
+        <a
+          href={`/projekte/${project.slug}`}
+          class="link"
+          aria-label={`${project.data.title} - Mehr lesen`}
+        >
           Mehr lesen
         </a>
         {index + 1 !== sortedProjects.length && (
