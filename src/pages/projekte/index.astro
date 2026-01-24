@@ -29,17 +29,14 @@ const sortedProjects = [...projects].sort((a, b) => {
             </p>
           </div>
         </div>
-        <p class="whitespace-pre-wrap">{project.data.description}</p>
+        {/* <p class="whitespace-pre-wrap">{project.data.description}</p> */}
         <div class="flex justify-between items-center">
           <p>
             <span class="font-bold">Tech Stack:&nbsp;</span>
             {project.data.technologies.join(" -  ")}
           </p>
         </div>
-        <a
-          href={`/projekte/${project.slug}`}
-          class="text-blue-600 hover:underline dark:text-blue-400"
-        >
+        <a href={`/projekte/${project.slug}`} class="link">
           Mehr lesen
         </a>
         {index + 1 !== sortedProjects.length && (
